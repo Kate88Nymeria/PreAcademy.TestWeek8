@@ -7,12 +7,8 @@ namespace DbLayer
 {
     public class UtenteAdoRepository
     {
-        private static string ConnectionString;
-
-        public UtenteAdoRepository(string connectionString)
-        {
-            ConnectionString = connectionString;
-        }
+        public static readonly string ConnectionString = "Server = (localdb)\\mssqllocaldb; " +
+            "Database = MostriVsEroi; Trusted_Connection = True;";
 
         private static SqlConnection conn;
         public static DataSet userDs = new DataSet();
@@ -66,7 +62,8 @@ namespace DbLayer
                     {
                         Nickname = username,
                         Password = row.Field<string>("Password"),
-                        Admin = row.Field<bool>("Admin")
+                        Admin = row.Field<bool>("Admin"),
+                        Id = row.Field<int>("Id")
                     };
                 }
             }

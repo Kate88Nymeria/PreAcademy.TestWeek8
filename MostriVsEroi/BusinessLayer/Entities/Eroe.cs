@@ -4,13 +4,20 @@ using System.Text;
 
 namespace BusinessLayer.Entities
 {
-    public abstract class Eroe
+    public class Eroe : Personaggio
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public int Livello { get; set; }
-        public int Punti { get; set; }
-        public Arma TipoDiArma { get; set; }
-        public Utente UtenteAutenticato { get; set; }
+        public int PuntiAccumulati { get; set; }
+        public int IdGiocatore { get; set; }
+
+        public Eroe()
+        {
+
+        }
+
+        public Eroe(string nome, string categoria, Arma arma) : base(nome, categoria, arma)
+        {
+
+        }
+
     }
 }

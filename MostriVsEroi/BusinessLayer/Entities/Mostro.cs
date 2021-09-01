@@ -4,10 +4,16 @@ using System.Text;
 
 namespace BusinessLayer.Entities
 {
-    public abstract class Mostro
+    public class Mostro : Personaggio
     {
-        public string Nome { get; set; }
-        public int Livello { get; set; }
-        public Arma TipoDiArma { get; set; }
+        public Mostro()
+        {
+
+        }
+
+        public Mostro(string nome, string categoria, Arma arma, int level) : base(nome, categoria, arma)
+        {
+
+        }
     }
 }

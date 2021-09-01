@@ -3,7 +3,7 @@ using BusinessLayer.Entities;
 using static PresentationLayer.Utilities.Forms;
 using static PresentationLayer.Utilities.Helpers;
 using static DbLayer.UtenteAdoRepository;
-using static PresentationLayer.MenuUser;
+using static PresentationLayer.Menu;
 using static PresentationLayer.Program;
 
 namespace PresentationLayer
@@ -36,13 +36,9 @@ namespace PresentationLayer
                     UserAR.AggiungiNuovoUtente(utenteRegistrato);
                     Console.WriteLine("Registrazione avvenuta con successo!");
                     ContinuaEsecuzione();
-                    UsaUtente(utenteRegistrato);
+                    MenuUser(utenteRegistrato);
                 }
             } while (!isCorrect);
-
-
-
-
         }  
     }
 }

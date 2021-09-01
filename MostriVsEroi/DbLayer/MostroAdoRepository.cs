@@ -7,12 +7,8 @@ namespace DbLayer
 {
     public class MostroAdoRepository
     {
-        private static string ConnectionString;
-
-        public MostroAdoRepository(string connectionString)
-        {
-            ConnectionString = connectionString;
-        }
+        public static readonly string ConnectionString = "Server = (localdb)\\mssqllocaldb; " +
+            "Database = MostriVsEroi; Trusted_Connection = True;";
 
         private static SqlConnection conn;
         public static DataSet monsterDs = new DataSet();
@@ -56,36 +52,19 @@ namespace DbLayer
 
         public static Mostro SearchMonster(string name)
         {
-            Mostro monster = null;
+            Mostro monster = new Mostro();
 
-            foreach (DataRow row in monsterDs.Tables["Eroi"].Rows)
+            foreach (DataRow row in monsterDs.Tables["Mostri"].Rows)
             {
                 if (row.Field<string>("Nome") == name)
                 {
-                    if (row.Field<int>("IdCategorie") == 3)
-                    {
-                        monster = new Cultista()
-                        {
-                            Nome = name
-                        };
-                    }
-                    else if (row.Field<int>("IdCategorie") == 4)
-                    {
-                        monster = new Orco()
-                        {
-                            Nome = name
-                        };
-                    }
-                    else if (row.Field<int>("IdCategorie") == 5)
-                    {
-                        monster = new SignoreDelMale()
-                        {
-                            Nome = name
-                        };
-                    }
+                    monster.Nome = name;
+                }
+                else
+                {
+                    monster = null;
                 }
             }
-
             return monster;
         }
 
@@ -120,13 +99,13 @@ namespace DbLayer
 
         #region operazioni di CRUD
 
-        public void AggiungiNuovoMostro(Mostro monster) //da controllare quando riesco a trovare l'id utente
+        public void AggiungiNuovoMostro(Mostro monster)
         {
             DataRow nuovaRiga = monsterDs.Tables["Mostri"].NewRow();
 
             nuovaRiga["Nome"] = monster.Nome;
             nuovaRiga["Livello"] = monster.Livello;
-            nuovaRiga["Arma"] = monster.TipoDiArma; //verifica correttezza
+            nuovaRiga["Arma"] = monster.TipoArma; //verifica correttezza
 
             monsterDs.Tables["Mostri"].Rows.Add(nuovaRiga);
             AggiornaDatabase();

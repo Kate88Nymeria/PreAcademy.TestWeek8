@@ -5,12 +5,7 @@ namespace PresentationLayer
 {
     class Program
     {
-        public static readonly string ConnectionString = "Server = (localdb)\\mssqllocaldb; " +
-            "Database = MostriVsEroi; Trusted_Connection = True;";
-        public static readonly UtenteAdoRepository UserAR = new UtenteAdoRepository(ConnectionString);
-        public static readonly EroeAdoRepository HeroAR = new EroeAdoRepository(ConnectionString);
-        public static readonly MostroAdoRepository MonsterAR = new MostroAdoRepository(ConnectionString);
-
+        public static readonly UtenteAdoRepository UserAR = new UtenteAdoRepository();
         static void Main(string[] args)
         {
             Console.WriteLine("====== Mostri vs Eroi ======");

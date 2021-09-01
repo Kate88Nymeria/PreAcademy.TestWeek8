@@ -3,8 +3,7 @@ using BusinessLayer.Entities;
 using static PresentationLayer.Utilities.Forms;
 using static PresentationLayer.Utilities.Helpers;
 using static DbLayer.UtenteAdoRepository;
-using static PresentationLayer.MenuUser;
-using static PresentationLayer.MenuAdmin;
+using static PresentationLayer.Menu;
 
 namespace PresentationLayer
 {
@@ -35,16 +34,16 @@ namespace PresentationLayer
                     if(utenteAutenticato.Password == utenteRicercato.Password)
                     {
                         Console.WriteLine("Login avvenuto correttamente");
-                        Console.WriteLine(utenteAutenticato); //prova per verifica Admin, non viene riconosciuto come true, problema di riconoscimento bool-bit
+                        //Console.WriteLine(utenteRicercato);
                         ContinuaEsecuzione();
 
-                        if (utenteAutenticato.Admin)
+                        if (utenteRicercato.Admin)
                         {
-                            UsaAdmin(utenteAutenticato);
+                            MenuAdmin(utenteRicercato);
                         }
                         else
                         {
-                            UsaUtente(utenteAutenticato);
+                            MenuUser(utenteRicercato);
                         }
                     }
                     else
