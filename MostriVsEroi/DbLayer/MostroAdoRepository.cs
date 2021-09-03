@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using BusinessLayer.Entities;
@@ -105,36 +106,40 @@ namespace DbLayer
 
             nuovaRiga["Nome"] = monster.Nome;
             nuovaRiga["Livello"] = monster.Livello;
-            nuovaRiga["Arma"] = monster.TipoArma; //verifica correttezza
+            nuovaRiga["IdCategorie"] = monster.IdCategoria;
+            nuovaRiga["IdArmi"] = monster.IdArma;
 
             monsterDs.Tables["Mostri"].Rows.Add(nuovaRiga);
             AggiornaDatabase();
         }
 
-        //public void StampaListaEroi(Utente user) //da controllare quando risolta la questione dell'id
-        //{
-        //    Console.WriteLine("====== ELENCO EROI ======");
-        //    Console.WriteLine();
+        public void StampaListaRigheMostri(List<DataRow> righe)
+        {
+            Console.WriteLine("{0,-10}{1,-30}{2,-9}{3,12}{4,10}",
+                "Id", "Nome", "Livello", "Categoria", "Arma");
+            Console.WriteLine(new string('-', 120));
 
-        //    Console.WriteLine("{0,-10}{1,-30}{2,-9}{3,-7}{4,12}{5,5}",
-        //        "Id", "Nome", "Livello", "Punti", "Categoria", "Arma");
-        //    Console.WriteLine(new string('-', 120));
+            foreach (DataRow riga in righe)
+            {
+                Console.WriteLine("{0,-10}{1,-30}{2,-9}{3,12}{4,10}",
+                    riga["Id"],
+                    riga["Nome"],
+                    riga["Livello"],
+                    riga["IdCategorie"],
+                    riga["IdArmi"]
+                    );
+            }
+        }
 
-        //    foreach (DataRow riga in heroDs.Tables["Eroi"].Rows)
-        //    {
-        //        if (riga.Field<int>("IdUtenti") == user.Id)//non mi visualizza l'id del db
-        //        {
-        //            Console.WriteLine("{0,-10}{1,-30}{2,-9}{3,-7}{4,12}{5,5}",
-        //               riga["Id"],
-        //               riga["Nome"],
-        //               riga["Livello"],
-        //               riga["Punti"],
-        //               riga["IdCategorie"],
-        //               riga["IdArmi"]
-        //            );
-        //        }
-        //    }
-        //}
+        public List<DataRow> ListaRigheMostri()
+        {
+            List<DataRow> righe = new List<DataRow>();
+            foreach (DataRow riga in monsterDs.Tables["Mostri"].Rows)
+            {
+                righe.Add(riga);
+            }
+            return righe;
+        }
 
         #endregion
 
@@ -143,14 +148,15 @@ namespace DbLayer
         SqlCommand CommandInsertMonster(SqlConnection connessione)
         {
             string comando = "INSERT INTO Mostri " +
-                "VALUES (@Nome, @Livello, @IdArmi)";
+                "VALUES (@Nome, @Livello, @IdArmi, @IdCategorie)";
 
             SqlCommand insertCommand = new SqlCommand(comando, connessione);
             insertCommand.CommandType = CommandType.Text;
 
-            insertCommand.Parameters.Add(new SqlParameter("@Nome", SqlDbType.NVarChar, 20, "Nickname"));
-            insertCommand.Parameters.Add(new SqlParameter("@Livello", SqlDbType.Int, 1, "Password"));
-            insertCommand.Parameters.Add(new SqlParameter("@IdArmi", SqlDbType.Int, 2, "Admin"));
+            insertCommand.Parameters.Add(new SqlParameter("@Nome", SqlDbType.NVarChar, 20, "Nome"));
+            insertCommand.Parameters.Add(new SqlParameter("@Livello", SqlDbType.Int, 1, "Livello"));
+            insertCommand.Parameters.Add(new SqlParameter("@IdArmi", SqlDbType.Int, 2, "IdArmi"));
+            insertCommand.Parameters.Add(new SqlParameter("@IdCategorie", SqlDbType.Int, 2, "IdCategorie"));
 
             return insertCommand;
         }

@@ -2,9 +2,12 @@
 using System;
 using static PresentationLayer.LoginMenu;
 using static PresentationLayer.RegistrationMenu;
-using static PresentationLayer.Utilities.Helpers;
-using static PresentationLayer.EroeCRUD;
-using static PresentationLayer.MostroCRUD;
+using static BusinessLayer.Utilities.Helpers;
+using static Services.EroeCRUD;
+using static Services.MostroCRUD;
+using static Services.StatServices;
+using static Services.GiocoService;
+using static PresentationLayer.Gioco;
 
 namespace PresentationLayer
 {
@@ -17,6 +20,7 @@ namespace PresentationLayer
 
             do
             {
+                Console.Clear();
                 Console.WriteLine("Cosa vuoi fare?");
                 Console.WriteLine("[ 1 ] - Accedi");
                 Console.WriteLine("[ 2 ] - Registrati");
@@ -53,10 +57,9 @@ namespace PresentationLayer
             bool continuare = true;
             int scelta;
 
-            Console.Clear();
-
             do
             {
+                Console.Clear();
                 Console.WriteLine("Cosa vuoi fare?");
                 Console.WriteLine("[ 1 ] - Gioca");
                 Console.WriteLine("[ 2 ] - Crea Nuovo Eroe");
@@ -69,7 +72,7 @@ namespace PresentationLayer
                 {
                     case 1:
                         Console.Clear();
-                        //gioco
+                        IniziaGioco(user);
                         break;
                     case 2:
                         Console.Clear();
@@ -97,10 +100,9 @@ namespace PresentationLayer
             bool continuare = true;
             int scelta;
 
-            Console.Clear();
-
             do
             {
+                Console.Clear();
                 Console.WriteLine("Cosa vuoi fare?");
                 Console.WriteLine("[ 1 ] - Gioca");
                 Console.WriteLine("[ 2 ] - Crea Nuovo Eroe");
@@ -115,7 +117,7 @@ namespace PresentationLayer
                 {
                     case 1:
                         Console.Clear();
-                        //gioco
+                        IniziaGioco(admin);
                         break;
                     case 2:
                         Console.Clear();
@@ -131,7 +133,7 @@ namespace PresentationLayer
                         break;
                     case 5:
                         Console.Clear();
-
+                        StampaClassifica();
                         break;
                     case 0:
                         continuare = false;

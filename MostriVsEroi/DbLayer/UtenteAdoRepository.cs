@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using BusinessLayer.Entities;
@@ -42,6 +43,7 @@ namespace DbLayer
 
                     userAdapter.SelectCommand = selectUser;
                     userAdapter.InsertCommand = CommandInsertUser(conn);
+                    userAdapter.UpdateCommand = CommandUpdateUser(conn);
 
                     userAdapter.SelectCommand = selectUser;
                     userAdapter.Fill(userDs, "Utenti");
@@ -92,6 +94,7 @@ namespace DbLayer
                 {
                     userAdapter.SelectCommand.Connection = conn;
                     userAdapter.InsertCommand.Connection = conn;
+                    userAdapter.UpdateCommand.Connection = conn;
 
                     userAdapter.Update(userDs, "Utenti");
                     userAdapter.Fill(userDs, "Utenti");
@@ -115,6 +118,28 @@ namespace DbLayer
             AggiornaDatabase();
         }
 
+        public void ModificaUtente(Utente user)
+        {
+            DataRow rigaDaModificare = userDs.Tables["Utenti"].Rows.Find(user.Id);
+
+            if (rigaDaModificare != null)
+            {
+                rigaDaModificare["Admin"] = user.Admin;
+            }
+
+            AggiornaDatabase();
+        }
+
+        public List<DataRow> ListaUtenti()
+        {
+            List<DataRow> righe = new List<DataRow>();
+            foreach (DataRow riga in userDs.Tables["Utenti"].Rows)
+            {
+                righe.Add(riga);
+            }
+            return righe;
+        }
+
         #endregion
 
         #region metodi di servizio per comandi
@@ -132,6 +157,19 @@ namespace DbLayer
             insertCommand.Parameters.Add(new SqlParameter("@Admin", SqlDbType.Bit, 1, "Admin"));
 
             return insertCommand;
+        }
+
+        SqlCommand CommandUpdateUser(SqlConnection connessione)
+        {
+            string comando = "UPDATE Utenti " +
+                "SET Admin = @Admin";
+
+            SqlCommand updateCommand = new SqlCommand(comando, connessione);
+            updateCommand.CommandType = CommandType.Text;
+
+            updateCommand.Parameters.Add(new SqlParameter("@Admin", SqlDbType.Bit, 1, "Admin"));
+
+            return updateCommand;
         }
 
         #endregion

@@ -15,15 +15,15 @@ namespace BusinessLayer.Entities
         public int IdArma { get; set; } //da trasformare in arma
 
         public int Livello { get; set; }
-        public int PuntiVita { get; set; }
+
+        public int PuntiVita { get {return Vita.CalcoloPuntiVita(Livello); } }
         public int Id { get; set; }
 
-        public Personaggio(string nome, Arma arma, int livello, int puntiVita, string categoria)
+        public Personaggio(string nome, Arma arma, int livello, string categoria)
         {
             Nome = nome;
             TipoArma = arma;
             Livello = livello;
-            PuntiVita = puntiVita;
             Categoria = categoria;
         }
 
@@ -32,13 +32,21 @@ namespace BusinessLayer.Entities
             Nome = nome;
             TipoArma = arma;
             Livello = 1;
-            PuntiVita = 20;
             Categoria = categoria;
         }
 
         public Personaggio()
         {
 
+        }
+
+        public override string ToString()
+        {
+            string stringa = $"{this.Id,-10}{this.Nome,-30}{this.Livello,-9}{this.IdCategoria,12}{this.IdArma,10}";
+
+            //string stringa = $"{0,-10}{1,-30}{2,-9}{3,12}{4,10}",
+            //    Id, Nome, Livello, IdCategoria, IdArma;
+            return stringa;
         }
     }
 }

@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbLayer", "DbLayer\DbLayer.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{212A8E97-09E0-4A1F-B368-A140D6373F94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockLayer", "MockLayer\MockLayer.csproj", "{FF4452E7-D7C6-4B23-85C0-0F8AA9304C43}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{212A8E97-09E0-4A1F-B368-A140D6373F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{212A8E97-09E0-4A1F-B368-A140D6373F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{212A8E97-09E0-4A1F-B368-A140D6373F94}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF4452E7-D7C6-4B23-85C0-0F8AA9304C43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF4452E7-D7C6-4B23-85C0-0F8AA9304C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF4452E7-D7C6-4B23-85C0-0F8AA9304C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF4452E7-D7C6-4B23-85C0-0F8AA9304C43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

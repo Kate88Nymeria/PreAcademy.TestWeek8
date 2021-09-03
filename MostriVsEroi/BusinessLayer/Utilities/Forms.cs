@@ -1,8 +1,8 @@
 ﻿using System;
 using BusinessLayer.Entities;
-using static PresentationLayer.Utilities.Helpers;
+using static BusinessLayer.Utilities.Helpers;
 
-namespace PresentationLayer.Utilities
+namespace BusinessLayer.Utilities
 {
     public class Forms
     {
@@ -50,6 +50,8 @@ namespace PresentationLayer.Utilities
         #region Eroe
         public static Eroe InserimentoDatiEroe()
         {
+            Eroe hero = new Eroe();
+
             Console.WriteLine("Inserisci il Nome dell'Eroe");
             string name = CheckValidString();
 
@@ -67,28 +69,23 @@ namespace PresentationLayer.Utilities
 
             if (categoria == "Guerriero")
             {
+                hero.IdCategoria = 1;
                 arma = SelectWarriorArm();
             }
             else
             {
+                hero.IdCategoria = 2;
                 arma = SelectMagicianArm();
             }
 
-            Eroe hero = new Eroe(name, categoria, arma);
+            hero.Nome = name;
+            hero.IdArma = arma.Id;
+            hero.PuntiAccumulati = 0;
+            hero.Livello = 1;
 
             return hero;
         }
 
-
-        //public static bool ExistHero(bool exists, int userId, Eroe hero)
-        //{
-        //    if (exists && hero.IdGiocatore == userId)
-        //    {
-        //        Console.WriteLine("Nome Eroe già esistente per questo utente");
-        //        return false;
-        //    }
-        //    return true;
-        //}
         public static bool ExistHero(Eroe eroeCercato, int userId, Eroe hero)
         {
             if (eroeCercato != null && hero.IdGiocatore == userId)
@@ -142,6 +139,7 @@ namespace PresentationLayer.Utilities
             int scelta;
 
             Arma arma = new Arma();
+            arma.IdCategoria = 1;
 
             do
             {
@@ -158,30 +156,35 @@ namespace PresentationLayer.Utilities
                 {
                     case 1:
                         Console.Clear();
+                        arma.Id = 1;
                         arma.Nome = "Alabarda";
                         arma.PuntiDanno = 15;
                         continuare = false;
                         break;
                     case 2:
                         Console.Clear();
+                        arma.Id = 2;
                         arma.Nome = "Ascia";
                         arma.PuntiDanno = 8;
                         continuare = false;
                         break;
                     case 3:
                         Console.Clear();
+                        arma.Id = 3;
                         arma.Nome = "Mazza";
                         arma.PuntiDanno = 5;
                         continuare = false;
                         break;
                     case 4:
                         Console.Clear();
+                        arma.Id = 4;
                         arma.Nome = "Spada";
                         arma.PuntiDanno = 1;
                         continuare = false;
                         break;
                     case 5:
                         Console.Clear();
+                        arma.Id = 5;
                         arma.Nome = "Spadone";
                         arma.PuntiDanno = 15;
                         continuare = false;
@@ -203,6 +206,7 @@ namespace PresentationLayer.Utilities
             int scelta;
 
             Arma arma = new Arma();
+            arma.IdCategoria = 2;
 
             do
             {
@@ -219,30 +223,35 @@ namespace PresentationLayer.Utilities
                 {
                     case 1:
                         Console.Clear();
+                        arma.Id = 6;
                         arma.Nome = "Arco e Frecce";
                         arma.PuntiDanno = 8;
                         continuare = false;
                         break;
                     case 2:
                         Console.Clear();
+                        arma.Id = 7;
                         arma.Nome = "Bacchetta";
                         arma.PuntiDanno = 5;
                         continuare = false;
                         break;
                     case 3:
                         Console.Clear();
+                        arma.Id = 8;
                         arma.Nome = "Bastone Magico";
                         arma.PuntiDanno = 10;
                         continuare = false;
                         break;
                     case 4:
                         Console.Clear();
+                        arma.Id = 9;
                         arma.Nome = "Onda d'Urto";
                         arma.PuntiDanno = 15;
                         continuare = false;
                         break;
                     case 5:
                         Console.Clear();
+                        arma.Id = 10;
                         arma.Nome = "Pugnale";
                         arma.PuntiDanno = 5;
                         continuare = false;
@@ -263,6 +272,8 @@ namespace PresentationLayer.Utilities
         #region Mostro
         public static Mostro InserimentoDatiMostro()
         {
+            Mostro monster = new Mostro();
+
             Console.WriteLine("Inserisci il Nome del Mostro");
             string name = CheckValidString();
 
@@ -280,14 +291,17 @@ namespace PresentationLayer.Utilities
 
             if (categoria == "Cultista")
             {
+                monster.IdCategoria = 3;
                 arma = SelectCultistArm();
             }
             else if(categoria == "Orco")
             {
+                monster.IdCategoria = 4;
                 arma = SelectOrcArm();
             }
             else
             {
+                monster.IdCategoria = 5;
                 arma = SelectEvilLordArm();
             }
 
@@ -298,10 +312,11 @@ namespace PresentationLayer.Utilities
             Console.WriteLine("Inserisci il Livello del Mostro");
             int level = CheckLevel();
 
-            Mostro monster = new Mostro(name, categoria, arma, level);
+            monster.Nome = name;
+            monster.Livello = level;
+            monster.IdArma = arma.Id;
 
             Console.WriteLine();
-            Console.WriteLine("Mostro creato");
 
             return monster;
         }
@@ -365,6 +380,7 @@ namespace PresentationLayer.Utilities
             int scelta;
 
             Arma arma = new Arma();
+            arma.IdCategoria = 3;
 
             do
             {
@@ -380,24 +396,28 @@ namespace PresentationLayer.Utilities
                 {
                     case 1:
                         Console.Clear();
+                        arma.Id = 11;
                         arma.Nome = "Discorso Noioso";
                         arma.PuntiDanno = 4;
                         continuare = false;
                         break;
                     case 2:
                         Console.Clear();
+                        arma.Id = 12;
                         arma.Nome = "Farneticazione";
                         arma.PuntiDanno = 7;
                         continuare = false;
                         break;
                     case 3:
                         Console.Clear();
+                        arma.Id = 13;
                         arma.Nome = "Imprecazione";
                         arma.PuntiDanno = 5;
                         continuare = false;
                         break;
                     case 4:
                         Console.Clear();
+                        arma.Id = 14;
                         arma.Nome = "Magia Nera";
                         arma.PuntiDanno = 3;
                         continuare = false;
@@ -419,6 +439,7 @@ namespace PresentationLayer.Utilities
             int scelta;
 
             Arma arma = new Arma();
+            arma.IdCategoria = 4;
 
             do
             {
@@ -434,24 +455,28 @@ namespace PresentationLayer.Utilities
                 {
                     case 1:
                         Console.Clear();
+                        arma.Id = 15;
                         arma.Nome = "Arco";
                         arma.PuntiDanno = 7;
                         continuare = false;
                         break;
                     case 2:
                         Console.Clear();
+                        arma.Id = 16;
                         arma.Nome = "Clava";
                         arma.PuntiDanno = 5;
                         continuare = false;
                         break;
                     case 3:
                         Console.Clear();
+                        arma.Id = 17;
                         arma.Nome = "Spada Rotta";
                         arma.PuntiDanno = 3;
                         continuare = false;
                         break;
                     case 4:
                         Console.Clear();
+                        arma.Id = 18;
                         arma.Nome = "Mazza Chiodata";
                         arma.PuntiDanno = 10;
                         continuare = false;
@@ -473,6 +498,7 @@ namespace PresentationLayer.Utilities
             int scelta;
 
             Arma arma = new Arma();
+            arma.IdCategoria = 5;
 
             do
             {
@@ -490,36 +516,42 @@ namespace PresentationLayer.Utilities
                 {
                     case 1:
                         Console.Clear();
+                        arma.Id = 19;
                         arma.Nome = "Alabarda del Drago";
                         arma.PuntiDanno = 30;
                         continuare = false;
                         break;
                     case 2:
                         Console.Clear();
+                        arma.Id = 20;
                         arma.Nome = "Divinazione";
                         arma.PuntiDanno = 15;
                         continuare = false;
                         break;
                     case 3:
                         Console.Clear();
+                        arma.Id = 21;
                         arma.Nome = "Fulmine";
                         arma.PuntiDanno = 10;
                         continuare = false;
                         break;
                     case 4:
                         Console.Clear();
+                        arma.Id = 22;
                         arma.Nome = "Fulmine Celeste";
                         arma.PuntiDanno = 15;
                         continuare = false;
                         break;
                     case 5:
                         Console.Clear();
+                        arma.Id = 23;
                         arma.Nome = "Tempesta";
                         arma.PuntiDanno = 8;
                         continuare = false;
                         break;
                     case 6:
                         Console.Clear();
+                        arma.Id = 24;
                         arma.Nome = "Tempesta Oscura";
                         arma.PuntiDanno = 15;
                         continuare = false;
@@ -535,6 +567,11 @@ namespace PresentationLayer.Utilities
             return arma;
         }
 
+        #endregion
+
+        #region Gioco
+
+        
         #endregion
     }
 }

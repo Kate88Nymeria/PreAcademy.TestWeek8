@@ -9,6 +9,7 @@ namespace BusinessLayer.Entities
         public string Nome { get; set; }
         public int PuntiDanno { get; set; }
         public int Id { get; set; }
+        public int IdCategoria { get; set; }
 
         public Arma()
         {
@@ -25,6 +26,12 @@ namespace BusinessLayer.Entities
         {
             Nome = nome;
             PuntiDanno = puntiDanno;
+        }
+
+        public override string ToString()
+        {
+            string stringa = $"Id Arma: {Id}\t\t\tNome: {Nome}\t\t\tPunti Danno: {PuntiDanno}";
+            return stringa;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using BusinessLayer.Entities;
 
-namespace PresentationLayer.Utilities
+namespace BusinessLayer.Utilities
 {
     public class Helpers
     {

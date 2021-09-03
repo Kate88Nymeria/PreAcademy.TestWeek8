@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using BusinessLayer.Entities;
+using static BusinessLayer.Utilities.Helpers;
 
 namespace DbLayer
 {
     public class EroeAdoRepository
     {
-        public const string ConnectionString = "Server = (localdb)\\mssqllocaldb; " +
+        const string ConnectionString = "Server = (localdb)\\mssqllocaldb; " +
             "Database = MostriVsEroi; Trusted_Connection = True;";
 
         private static SqlConnection conn;
@@ -43,6 +45,7 @@ namespace DbLayer
                     heroAdapter.SelectCommand = selectHero;
                     heroAdapter.InsertCommand = CommandInsertHero(conn);
                     heroAdapter.DeleteCommand = CommandDeleteHero(conn);
+                    heroAdapter.UpdateCommand = CommandUpdateHero(conn);
 
                     heroAdapter.SelectCommand = selectHero;
                     heroAdapter.Fill(heroDs, "Eroi");
@@ -51,50 +54,28 @@ namespace DbLayer
             return true;
         }
 
-        //public static Eroe SearchHero(string name)
-        //{
-        //    Eroe hero = null;
+        public static Eroe SearchHero(string name)
+        {
+            Eroe hero = null;
 
-        //    foreach (DataRow row in heroDs.Tables["Eroi"].Rows)
-        //    {
-        //        if (row.Field<string>("Nome") == name)
-        //        {
-        //            hero = new Eroe()
-        //            {
-        //                Nome = name,
-        //                IdCategoria = row.Field<int>("IdCategorie"),
-        //                IdArma = row.Field<int>("IdArma"),
-        //                Id = row.Field<int>("Id"),
-        //                //PuntiVita = row.Field<int>("Punti"),
-        //                Livello = row.Field<int>("Livello"),
-        //                PuntiAccumulati = row.Field<int>("Punti")
-        //            };
-        //        }
-        //    }
-        //    return hero;
-        //}
-
-        //public static bool VerificaNomeEroe(string nome)
-        //{
-        //    string comando = "SELECT * from Eroi where Nome=@Nome";
-
-        //    SqlCommand command = new SqlCommand(comando, conn);
-        //    command.CommandType = CommandType.Text;
-
-        //    command.Parameters.AddWithValue("@Nome", nome);
-
-        //    SqlDataReader reader = command.ExecuteReader();
-
-        //    while (reader.Read())
-        //    {
-        //        string nomeEroe = (string)reader["Nome"];
-        //        if(nomeEroe == nome)
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
+            foreach (DataRow row in heroDs.Tables["Eroi"].Rows)
+            {
+                if (row.Field<string>("Nome") == name)
+                {
+                    hero = new Eroe()
+                    {
+                        Nome = name,
+                        IdCategoria = row.Field<int>("IdCategorie"),
+                        IdArma = row.Field<int>("IdArma"),
+                        Id = row.Field<int>("Id"),
+                        //PuntiVita = row.Field<int>("Punti"),
+                        Livello = row.Field<int>("Livello"),
+                        PuntiAccumulati = row.Field<int>("Punti")
+                    };
+                }
+            }
+            return hero;
+        }
 
         public void AggiornaDatabase()
         {
@@ -117,6 +98,8 @@ namespace DbLayer
                 {
                     heroAdapter.SelectCommand.Connection = conn;
                     heroAdapter.InsertCommand.Connection = conn;
+                    heroAdapter.DeleteCommand.Connection = conn;
+                    heroAdapter.UpdateCommand.Connection = conn;
 
                     heroAdapter.Update(heroDs, "Eroi");
                     heroAdapter.Fill(heroDs, "Eroi");
@@ -131,19 +114,31 @@ namespace DbLayer
         {
             DataRow nuovaRiga = heroDs.Tables["Eroi"].NewRow();
 
-            nuovaRiga["Id"] = hero.Id;
             nuovaRiga["Nome"] = hero.Nome;
             nuovaRiga["Livello"] = hero.Livello;
             nuovaRiga["Punti"] = hero.PuntiAccumulati;
-            nuovaRiga["IdArmi"] = hero.TipoArma.Id;
             nuovaRiga["IdCategorie"] = hero.IdCategoria;
+            nuovaRiga["IdArmi"] = hero.IdArma;
             nuovaRiga["IdUtenti"] = hero.IdGiocatore;
 
             heroDs.Tables["Eroi"].Rows.Add(nuovaRiga);
             AggiornaDatabase();
         }
 
-        public void EliminaEroe(int id) //da controllare quando riesco ad inserire eroi
+        public void ModificaEroe(Eroe hero)
+        {
+            DataRow rigaDaModificare = heroDs.Tables["Eroi"].Rows.Find(hero.Id);
+
+            if(rigaDaModificare != null)
+            {
+                rigaDaModificare["Livello"] = hero.Livello;
+                rigaDaModificare["Punti"] = hero.PuntiAccumulati;
+            }
+
+            AggiornaDatabase();
+        }
+
+        public void EliminaEroe(int id)
         {
             DataRow rigaDaEliminare = heroDs.Tables["Eroi"].Rows.Find(id);
             rigaDaEliminare?.Delete();
@@ -151,26 +146,51 @@ namespace DbLayer
             AggiornaDatabase();
         }
 
+        public List<DataRow> ListaEroi()
+        {
+            List<DataRow> righe = new List<DataRow>();
+            foreach (DataRow riga in heroDs.Tables["Eroi"].Rows)
+            {
+                righe.Add(riga);
+            }
+            return righe;
+        }
+
+        public List<DataRow> ListaEroiUtente(int userId)
+        {
+            List<DataRow> righe = new List<DataRow>();
+            foreach (DataRow riga in heroDs.Tables["Eroi"].Rows)
+            {
+                if (riga.Field<int>("IdUtenti") == userId)
+                {
+                    righe.Add(riga);
+                }
+            }
+            return righe;
+        }
         public void StampaListaEroi(Utente user)
         {
-            Console.WriteLine("{0,-10}{1,-30}{2,-9}{3,-7}{4,12}{5,5}",
-                "Id", "Nome", "Livello", "Punti", "Categoria", "Arma");
+            Console.WriteLine("{0,-10}{1,-30}{2,-9}{3,12}{4,10}{5,20}",
+                "Id", "Nome", "Livello", "Categoria", "Arma", "Punti Accumulati");
             Console.WriteLine(new string('-', 120));
 
             foreach (DataRow riga in heroDs.Tables["Eroi"].Rows)
             {
                 if (riga.Field<int>("IdUtenti") == user.Id)
                 {
-                    Console.WriteLine("{0,-10}{1,-30}{2,-9}{3,-7}{4,12}{5,5}",
-                       riga["Id"],
-                       riga["Nome"],
-                       riga["Livello"],
-                       riga["Punti"],
-                       riga["IdCategorie"],
-                       riga["IdArmi"]
+                    Console.WriteLine("{0,-10}{1,-30}{2,-9}{3,12}{4,10}{5,20}",
+                    riga["Id"],
+                    riga["Nome"],
+                    riga["Livello"],
+                    riga["IdCategorie"],
+                    riga["IdArmi"],
+                    riga["Punti"]
                     );
                 }
             }
+            Console.WriteLine();
+            Console.WriteLine(new string('-', 120));
+            Console.WriteLine();
         }
 
         #endregion
@@ -188,10 +208,9 @@ namespace DbLayer
             insertCommand.Parameters.Add(new SqlParameter("@Nome", SqlDbType.NVarChar, 20, "Nome"));
             insertCommand.Parameters.Add(new SqlParameter("@Livello", SqlDbType.Int, 1, "Livello"));
             insertCommand.Parameters.Add(new SqlParameter("@Punti", SqlDbType.Int, 5, "Punti"));
-            insertCommand.Parameters.Add(new SqlParameter("@IdCategorie", SqlDbType.Int, 1, "IdCategoria"));
-            insertCommand.Parameters.Add(new SqlParameter("@IdArmi", SqlDbType.Int, 2, "IdArma"));
-            insertCommand.Parameters.Add(new SqlParameter("@IdUtenti", SqlDbType.Int, 10, "IdGiocatore"));
-
+            insertCommand.Parameters.Add(new SqlParameter("@IdCategorie", SqlDbType.Int, 1, "IdCategorie"));
+            insertCommand.Parameters.Add(new SqlParameter("@IdArmi", SqlDbType.Int, 2, "IdArmi"));
+            insertCommand.Parameters.Add(new SqlParameter("@IdUtenti", SqlDbType.Int, 10, "IdUtenti"));
 
             return insertCommand;
         }
@@ -206,6 +225,23 @@ namespace DbLayer
             deleteCommand.Parameters.Add(new SqlParameter("@Id", SqlDbType.Int, 5, "Id"));
 
             return deleteCommand;
+        }
+
+        SqlCommand CommandUpdateHero(SqlConnection connessione)
+        {
+            string comando = "UPDATE Eroi " +
+                "SET Livello = @Livello, " +
+                    "Punti = @Punti " +
+                    "WHERE Id = @Id";
+
+            SqlCommand updateCommand = new SqlCommand(comando, connessione);
+            updateCommand.CommandType = CommandType.Text;
+
+            updateCommand.Parameters.Add(new SqlParameter("@Id", SqlDbType.Int, 100, "Id"));
+            updateCommand.Parameters.Add(new SqlParameter("@Livello", SqlDbType.Int, 1, "Livello"));
+            updateCommand.Parameters.Add(new SqlParameter("@Punti", SqlDbType.Int, 5, "Punti"));
+
+            return updateCommand;
         }
 
         #endregion

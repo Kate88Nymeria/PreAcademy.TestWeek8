@@ -19,5 +19,10 @@ namespace BusinessLayer.Entities
 
         }
 
+        public override string ToString()
+        {
+            string stringa = "{0,20}", PuntiAccumulati;
+            return base.ToString() + stringa;
+        }
     }
 }

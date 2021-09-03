@@ -1,7 +1,7 @@
 ﻿using System;
 using BusinessLayer.Entities;
-using static PresentationLayer.Utilities.Forms;
-using static PresentationLayer.Utilities.Helpers;
+using static BusinessLayer.Utilities.Forms;
+using static BusinessLayer.Utilities.Helpers;
 using static DbLayer.UtenteAdoRepository;
 using static PresentationLayer.Menu;
 
@@ -34,7 +34,6 @@ namespace PresentationLayer
                     if(utenteAutenticato.Password == utenteRicercato.Password)
                     {
                         Console.WriteLine("Login avvenuto correttamente");
-                        //Console.WriteLine(utenteRicercato);
                         ContinuaEsecuzione();
 
                         if (utenteRicercato.Admin)
